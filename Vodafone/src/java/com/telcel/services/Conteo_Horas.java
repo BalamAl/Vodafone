@@ -15,13 +15,15 @@ import java.time.format.DateTimeFormatter;
 public class Conteo_Horas {
      private static final LocalTime INICIO_JORNADA = LocalTime.of(8, 0);
     private static final LocalTime FIN_JORNADA = LocalTime.of(17, 0);
+    public boolean resultado;
 
-    public static void main(String[] args) {
-        String fechaStr = "03/06/2024 10:15";
+    public void Conteo(String fecha) {
+        String fechaStr = fecha;
         LocalDateTime fechaInicio = LocalDateTime.parse(fechaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
 
         boolean resultado = haPasadoMasDe8HorasLaborables(fechaInicio, LocalDateTime.now());
         System.out.println("¿Han pasado más de 8 horas laborables? " + resultado);
+        
     }
 
     public static boolean haPasadoMasDe8HorasLaborables(LocalDateTime inicio, LocalDateTime fin) {

@@ -25,7 +25,7 @@ public class Registro_logs {
             // Generamos el nombre del archivo con la fecha actual
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String date = dateFormat.format(new Date());
-            String pattern = "/home/remedy/tomcat/logs/Apagado_servicios_ant_" + date + ".log";
+            String pattern = "/home/remedy/tomcat/logs/Vonafone" + date + ".log";
             //String pattern = "C:\\Users\\CONSULTOR\\Documents\\BMC2\\Apagado_servicios_ant_" + date + ".log";
 
             FileHandler fileHandler = new FileHandler(pattern, true); // true para anexar datos al archivo si ya existe

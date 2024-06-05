@@ -6,6 +6,9 @@ package com.telcel.webService;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import com.opencsv.CSVWriter;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -21,23 +24,36 @@ public class Vodafone {
      * This is a sample web service operation
      */
    @WebMethod(operationName = "guardarDatos")
-    public String guardarDatos(@WebParam(name = "datos") String datos) {
-        String datosCSV = convertirAFormatoCSV(datos);
-        try (FileWriter csvWriter = new FileWriter("datos.csv", true)) {
-            csvWriter.append(datosCSV);
-            csvWriter.append("\n");
-            csvWriter.flush();
-            return "Datos guardados en formato CSV con éxito!";
+    public String guardarDatos(@WebParam(name = "Id_Request") String id_Request, @WebParam(name = "Id_INC") String id_INC, @WebParam(name = "Fecha_Modificacion") String fecha) {
+        
+        String incidente1 = id_Request;
+        String incidente2 = id_INC;
+        
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        LocalDateTime dateTime = LocalDateTime.parse(fecha, inputFormatter);
+        String formattedDate = dateTime.format(outputFormatter);
+        
+        String filePath = "/home/remedy/Vodafone/INC_Pendientes/"+incidente2+".csv";
+
+        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath))) {
+            // Encabezados
+            /*String[] header = {"Incident Number 1", "Incident Number 2", "Date"};
+            writer.writeNext(header);
+*/
+            // Datos
+            String[] data = {incidente1, incidente2, formattedDate};
+            writer.writeNext(data);
+
+            System.out.println("Datos guardados en incidentes.csv exitosamente.");
         } catch (IOException e) {
-            e.printStackTrace();
-            return "Error al guardar los datos en formato CSV.";
+            System.out.println("Error al escribir en el archivo CSV: " + e);
         }
+        
+       return null;
+        
     }
 
-    private String convertirAFormatoCSV(String datosJson) {
-        // Aquí iría la lógica para convertir los datos JSON a CSV
-        // Esto es solo un placeholder y necesitarás implementar la conversión según tu estructura de datos específica
-        return "dato1,dato2,dato3"; // Retorna una cadena en formato CSV
-    }
 
 }
